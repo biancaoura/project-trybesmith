@@ -16,4 +16,18 @@ export default class UserController {
 
     res.status(StatusCodes.CREATED).json({ token });
   };
+
+  public login = async (req: Request, res: Response) => {
+    const { username, password } = req.body;
+
+    const validUser = await this.userService.getByUsername(username);
+
+    if (!validUser || validUser.password !== password) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Username or password invalid' });
+    }
+
+    const token = jwt.createToken(validUser);
+
+    res.status(StatusCodes.OK).json({ token });
+  };
 }
