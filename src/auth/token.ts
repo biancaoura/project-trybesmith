@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import IUser from '../interfaces/user.interface';
 
 export default class JWT {
@@ -9,5 +9,9 @@ export default class JWT {
       expiresIn: '7d',
       algorithm: 'HS256',
     });
+  }
+
+  public tokenValidation(token: string): string | JwtPayload {
+    return jwt.verify(token, this.secret);
   }
 }
